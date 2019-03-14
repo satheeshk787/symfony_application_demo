@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Your Assignment Details</h1>
+
+
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"></h4>
+        <button type="button" class="close close-d" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button"  class="btn btn-danger close-d" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ assignment.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ assignment.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ assignment.description }}</td>
+            </tr>
+
+            <tr>
+                <th>Materials</th>
+                <td>
+                    <ul>
+                        {% for material in assignment.materials %}
+                            <li>
+                                <a class="show" 
+                                    title='{{ material.title }}' 
+                                    download='{{ material.getWebMaterialDataPath }}' 
+                                    type='' 
+                                    href="#" 
+                                    data-toggle="modal" 
+                                    data-target="#myModal" > {{ material.title }} </a> 
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  $(".show").click(function(){
+
+      this.type = this.download.split('.').pop();
+
+      $(".modal-title").html(this.title);
+      
+      if(this.type == 'png' || this.type == 'jpg' || this.type == 'jpeg')
+      {
+         $(".modal-body").html("<img style='width:100%;' src='"+this.download+"' >");
+      }
+      else if(this.type == 'pdf')
+      {
+          $(".modal-body").html("<iframe src='"+this.download+"' style='width:100%;height:-webkit-fill-available' ></iframe>");
+      }
+      else if(this.type == 'mp4')
+      {
+          $(".modal-body").html("<video style='width:100%;' controls><source src='"+this.download+"' type='video/mp4' style='width:100%;'> Your browser does not support the video tag.</video>");
+      }
+      else
+      {
+          $(".modal-body").html("We cannot recognize your file<br><a href='"+this.download+"' >Download File</a>");
+      }
+
+  });
+
+  $(".close-d").click(function(){
+
+    $(".modal-body").html("");
+    $(".modal-title").html("");
+  
+  });
+
+</script>
+
+
+
+
+
+
+{% endblock %}

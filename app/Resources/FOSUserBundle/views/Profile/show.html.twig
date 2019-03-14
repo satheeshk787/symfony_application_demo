@@ -1,0 +1,89 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+
+
+<div class="card">
+  <div class="card-header bg-primary text-white">
+  		View Profile 
+       {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+          {% if app.user.role == 'student' %}
+  		        <a style=" float: right;" href="/student_profile/edit" class="btn btn-warning">Edit</a>
+          {% else %}
+              <a style=" float: right;" href="/myprofile/edit" class="btn btn-warning">Edit</a>
+          {% endif %}
+      {% endif %}
+  </div>
+  <div class="card-body">
+
+
+  		<table class="table">
+  			<tr>
+  				<td colspan="2" align="center">
+  					<img height="150px" src= "{{ app.user.getWebProfilePicturePath }}">
+  				</td>
+  			</tr>
+  			<tr>
+  				<th>User name</th>
+  				<td>{{app.user.username}}</td>
+  			</tr>
+  			<tr>
+  				<th>Email</th>
+  				<td>{{app.user.email}}</td>
+  			</tr>
+
+  			<tr>
+  				<th>Date of birth</th>
+  				<td>{{app.user.dob|date('d-m-Y')}}</td>
+  			</tr>
+
+
+        {% if app.user.university !="" %}
+          {% if app.user.getUniversityStatus=='' %}
+            <tr>
+              <th>University name</th>
+              <td>{{app.user.university}}</td>
+            </tr>
+          {% else %}
+             <tr>
+              <th>University name</th>
+              <td>You are selected '{{app.user.university}}' and your university under review. </td>
+            </tr>
+          {% endif %}
+        {% endif %}
+
+
+
+         <tr>
+          <th>Hobbies</th>
+          <td>
+
+          <ul>
+          {% for hobby in user.hobbies %}
+              <li>
+                  {{ hobby.name }}
+              </li>
+          {% endfor %}
+          </ul>
+          </td>
+        </tr>
+
+
+        <tr>
+          <th>Role</th>
+          <td>{{app.user.role}}</td>
+        </tr>
+  		</table>
+      
+  		<!-- { include "@FOSUser/Profile/show_content.html.twig"} -->
+
+  </div> 
+</div>
+
+	
+
+
+
+
+{% endblock %}

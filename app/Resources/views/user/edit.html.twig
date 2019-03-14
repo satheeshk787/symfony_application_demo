@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block title %} Edit User Profile {% endblock %}
+
+
+{% block body %}
+
+	<h1 style="width:100%;">Edit User Profile</h1>
+
+	<style>
+	#form div
+	{
+		margin: 14px;
+	}
+	</style>
+
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
+
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			jQuery().sfPrototypeMan({ 
+				addButtonText: "Add Hobby",
+				rmButtonText: "Remove"
+			});
+			
+			jQuery("#form_hobbies").sortable();
+
+
+		});
+
+		var first_val = $("#form_university").val();
+		$('#form_university').append('<option value="'+ first_val +'">Other</option>');
+		$("#form_university_add").parent().hide();
+
+		$("#form_university").change(function(){
+			if($('#form_university option:selected').text()=='Other')
+			{
+				$("#form_university_add").parent().show();
+		  	}
+		  	else
+		  	{
+		  		$("#form_university_add").val("");
+		  		$("#form_university_add").parent().hide();
+		  	}
+
+		});
+
+	</script>
+
+
+{% endblock %}

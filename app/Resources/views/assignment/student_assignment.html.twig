@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Your Assignments list</h1>
+
+
+
+
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Expire date</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for share in shares %}
+            <tr>
+              
+                <td>{{ share.assignment.name }}</td>
+                <td>{{ share.assignment.status }}</td>
+                <td>{{ share.assignment.getExpireDate|date("d-m-Y") }}</td>
+                <td>{{ share.assignment.description }}</td>
+                
+                <td>
+                    {% if share.assignment.status=='ACTIVE' %}
+                     <a href="{{ path('student_assignment_show', { 'id': share.assignment.id }) }}">show</a>
+                    {% else %}
+                      The link expired.
+                    {% endif %}
+                </td>
+               
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

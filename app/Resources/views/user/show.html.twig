@@ -1,0 +1,67 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+
+
+<div class="card">
+  <div class="card-header bg-primary text-white">
+      View Profile 
+      <!-- <a style=" float: right;" href="/myprofile/edit" class="btn btn-warning">Edit</a> -->
+  </div>
+  <div class="card-body">
+
+      <table class="table">
+        <tr>
+          <td colspan="2" align="center">
+            <img height="150px" src= "{{ user.getWebProfilePicturePath }}">
+          </td>
+        </tr>
+        <tr>
+          <th>User name</th>
+          <td>{{user.username}}</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>{{user.email}}</td>
+        </tr>
+        <tr>
+          <th>University</th>
+          <td>{{user.university}}</td>
+        </tr>
+        <tr>
+          <th>Date of birth</th>
+          <td>{{user.dob|date('d-m-Y')}}</td>
+        </tr>
+
+         <tr>
+          <th>Hobbies</th>
+          <td>
+
+          <ul>
+          {% for hobby in user.hobbies %}
+              <li>
+                  {{ hobby.name }}
+              </li>
+          {% endfor %}
+          </ul>
+          </td>
+        </tr>
+
+        <tr>
+          <th>Role</th>
+          <td>{{user.role}}</td>
+        </tr>
+      </table>
+      
+      <!-- { include "@FOSUser/Profile/show_content.html.twig"} -->
+
+  </div> 
+</div>
+
+  
+
+
+
+
+{% endblock %}

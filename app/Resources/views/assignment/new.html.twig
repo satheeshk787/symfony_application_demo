@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Assignment creation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('assignment_index') }}">Back to the list</a>
+        </li>
+    </ul>
+        <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery().sfPrototypeMan({ 
+                addButtonText: "Add Material",
+                rmButtonText: "Remove"
+            });
+            
+            jQuery("#form_materials").sortable();
+        });
+    </script>
+{% endblock %}

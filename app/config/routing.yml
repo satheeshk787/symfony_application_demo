@@ -1,0 +1,23 @@
+app_assignment:
+    resource: "@AppBundle/Controller/AssignmentController.php"
+    type:     annotation
+
+app_assignment:
+    resource: "@AppBundle/Controller/AssignmentController.php"
+    type:     annotation
+
+app_university:
+    resource: "@AppBundle/Controller/UniversityController.php"
+    type:     annotation
+
+app_contact:
+    resource: "@AppBundle/Controller/ContactController.php"
+    type:     annotation
+
+# app/config/routing.yml
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation

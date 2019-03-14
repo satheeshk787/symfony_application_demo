@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+{% block title %} Edit Myprofile {% endblock %}
+
+
+{% block body %}
+
+	
+
+	<h1 style="width:100%;">Edit My Profile</h1>
+
+	<style>
+	#form div
+	{
+		margin: 14px;
+	}
+	</style>
+
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
+
+
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			jQuery().sfPrototypeMan({ 
+				addButtonText: "Add Hobby",
+				rmButtonText: "Remove"
+			});
+			
+			jQuery("#form_hobbies").sortable();
+		});
+	</script>
+
+<!-- 	<script>
+
+	var $collectionHolder;
+
+	// setup an "add a hobby" link
+	var $addHobbyButton = $('<button type="button" class="add_hobby_link btn btn-success">Add a hobby</button>');
+
+	var $newLinkLi = $addHobbyButton;
+
+	jQuery(document).ready(function() {
+	    // Get the ul that holds the collection of hobbies
+	    $collectionHolder = $('#form_hobbies');
+
+	    // add the "add a hobby" anchor and li to the hobbyies ul
+	    $collectionHolder.append($newLinkLi);
+
+	    // count the current form inputs we have (e.g. 2), use that as the new
+	    // index when inserting a new item (e.g. 2)
+	    $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+	    $addHobbyButton.on('click', function(e) {
+	        // add a new hobby form (see next code block)
+	        addHobbyForm($collectionHolder, $newLinkLi);
+	    });
+
+
+
+	    //for delete
+
+	  	// Get the ul that holds the collection of hobbies
+	    $collectionHolder = $('#form_hobbies');
+
+	    // add a delete link to all of the existing hobby form li elements
+	    $collectionHolder.find('div[id^=form_hobbies]').each(function() {
+	        addHobbyFormDeleteLink($(this));
+	    });
+
+	    // ... the rest of the block from above
+
+	});
+
+
+	function addHobbyForm($collectionHolder, $newLinkLi) {
+	    // Get the data-prototype explained earlier
+	    var prototype = $collectionHolder.data('prototype');
+
+	    // get the new index
+	    var index = $collectionHolder.data('index');
+
+	    var newForm = prototype;
+	    // You need this only if you didn't set 'label' => false in your hobbies field in TaskType
+	    // Replace '__name__label__' in the prototype's HTML to
+	    // instead be a number based on how many items we have
+	    // newForm = newForm.replace(/__name__label__/g, index);
+
+	    // Replace '__name__' in the prototype's HTML to
+	    // instead be a number based on how many items we have
+	    newForm = newForm.replace(/__name__/g, index);
+
+	    // increase the index with one for the next item
+	    $collectionHolder.data('index', index + 1);
+
+	    // Display the form in the page in an li, before the "Add a hobby" link li
+	    var $newFormLi = newForm;
+	    $newLinkLi.before($newFormLi);
+
+	    addHobbyFormDeleteLink($newFormLi);
+	}
+
+
+
+
+
+	function addHobbyFormDeleteLink($hobbyFormLi) 
+	{
+	    var $removeFormButton = $('<button type="button" class="btn btn-danger" style="position: absolute;margin-top: -52px;">X</button>');
+	    $hobbyFormLi.append($removeFormButton);
+
+	    $removeFormButton.on('click', function(e) {
+	        // remove the li for the hobby form
+	        $hobbyFormLi.remove();
+	    });
+	}
+
+
+
+
+	</script> -->
+
+
+
+
+{% endblock %}
