@@ -45,6 +45,15 @@ class AssignmentType extends AbstractType
                 'allow_delete'=> true
             ))
 
+            
+            ->add('questions', CollectionType::class, array(
+                'entry_type' => QuestionType::class,
+                'entry_options' => ['label' => false],
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete'=> true
+            ))
+
 
 
             ;

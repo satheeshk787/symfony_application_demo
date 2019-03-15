@@ -27,6 +27,12 @@ class Assignment
      */
     private $materials;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="assignment", cascade={"persist","remove"},orphanRemoval=true)
+     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+     */
+    private $questions;
+
 
     /**
      * @ORM\OneToMany(targetEntity="Share", mappedBy="assignment", cascade={"persist","remove"},orphanRemoval=true)
@@ -40,6 +46,7 @@ class Assignment
         // parent::__construct();
         // your own logic
         $this->materials = new ArrayCollection();
+        $this->questions = new ArrayCollection();
         $this->shares = new ArrayCollection();
     }
 
@@ -236,7 +243,7 @@ class Assignment
 
 
 
-
+    //materials
     public function getMaterials()
     {
         return $this->materials;
@@ -255,8 +262,27 @@ class Assignment
         return $this;
     }
 
-
-
+    
+    //questions
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+    
+    public function addQuestion(Question $question)
+    {
+        $question->setAssignment($this);
+        $this->questions->add($question);
+    }
+    
+    public function removeQuestion(Question $question)
+    {
+        $this->questions->removeElement($question);
+        return $this;
+    }
+    
+    
+    
 
     //shares
     public function getShares()

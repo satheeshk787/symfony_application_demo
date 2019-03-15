@@ -223,7 +223,7 @@ class UserController extends Controller
             ))
             
             ->getForm();
-           
+            
 
         $form->handleRequest($request);
 
@@ -541,7 +541,21 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
 
 
-         $users = $em->getRepository('AppBundle:User')->findBy(array('role' => '1'));
+         //$users = $em->getRepository('AppBundle:User')->findBy(array('role' => '1'));
+        $search="";
+        if(isset($_GET['search']))
+        {
+            if($_GET['search']!="")
+            {
+                $search=" and u.username like '%".$_GET['search']."%'";
+            }
+        }
+
+         $users = $em->getRepository('AppBundle:User')
+            ->createQueryBuilder('u')
+            ->where("u.role='1'".$search)
+            ->getQuery()
+            ->execute();
          
          // $assignments = $em->getRepository('AppBundle:Assignment')->find($id);
          // $shares=$assignments->getShares();
