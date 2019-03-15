@@ -23,11 +23,27 @@
     <script type="text/javascript">
         jQuery(document).ready(function() {
             jQuery().sfPrototypeMan({ 
-                addButtonText: "Add Material",
+                addButtonText: "Add",
                 rmButtonText: "Remove"
             });
             
-            jQuery("#form_materials").sortable();
+            jQuery("#appbundle_assignment_materials").sortable();
         });
+
+        
+        function setSuppuration(obj,color)
+        {
+            obj.parent().css("background", color).css("padding", "20px").css("margin-top", "20px").css("margin-bottom","20px");
+        }
+
+        setSuppuration($("#appbundle_assignment_materials"),"#c6d6c6");
+        setSuppuration($("#appbundle_assignment_questions"),"#c6d6c6");
+        setSuppuration($("#appbundle_assignment_questions_0_answers"),"#9de4b0");
+
+
     </script>
+
+
+
+
 {% endblock %}
