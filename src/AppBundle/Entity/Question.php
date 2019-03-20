@@ -31,6 +31,12 @@ class Question
     private $answers;
 
 
+    /**
+     * @ORM\OneToMany(targetEntity="StudentsAnswer", mappedBy="question", cascade={"persist","remove"},orphanRemoval=true)
+     * @ORM\JoinColumn(name="students_answer_id", referencedColumnName="id")
+     */
+    private $students_answers;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="Assignment", inversedBy="questions")
@@ -57,6 +63,7 @@ class Question
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->students_answers = new ArrayCollection();
     }
 
 
@@ -156,7 +163,7 @@ class Question
     
     public function addAnswer(Answer $answer)
     {
-        $answer->setAnswer($this);
+        $answer->setQuestion($this);
         $this->answers->add($answer);
     }
     
@@ -165,6 +172,34 @@ class Question
         $this->answer->removeElement($answer);
         return $this;
     }
+
+    
+
+    //students answers
+    public function getStudentsAnswers()
+    {
+        return $this->students_answers;
+    }
+    
+    public function addStudentsAnswer(Answer $students_answer)
+    {
+        $students_answer->setQuestion($this);
+        $this->students_answers->add($students_answer);
+    }
+    
+    public function removeStudentsAnswer(Answer $students_answer)
+    {
+        $this->students_answer->removeElement($students_answer);
+        return $this;
+    }
+
+
+    // public function __toString(){
+    //     // to show the name of the Category in the select
+    //     return $this->question;
+    //     // to show the id of the Category in the select
+    //     // return $this->id;
+    // }
 
 
 

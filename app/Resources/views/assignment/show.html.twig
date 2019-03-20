@@ -71,8 +71,47 @@
 
             </tr>
 
+
+
+
+
+            <tr>
+                <th>Questions</th>
+                <td>
+                   
+                   <ol>
+                        {% for question in assignment.questions %}
+
+                            <li>
+
+                              {{question.question}}
+                              <ul>
+                                {% for answer in question.answers %}
+                                  <li>{{answer.answer}}</li>
+                                {% endfor %}
+                              </ul>
+
+
+                            </li>
+
+                        {% endfor %}
+                    </ol>
+
+
+                </td>
+            </tr>
+
+
+
+
+
+
+
         </tbody>
     </table>
+
+
+
 
     <ul>
         <li>

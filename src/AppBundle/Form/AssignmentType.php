@@ -54,8 +54,6 @@ class AssignmentType extends AbstractType
                 'allow_delete'=> true
             ))
 
-
-
             ;
     }/**
      * {@inheritdoc}

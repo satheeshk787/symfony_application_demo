@@ -3,6 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Assignment;
+use AppBundle\Entity\StudentsAnswer;
+use AppBundle\Entity\Question;
+use AppBundle\Entity\StudentsAnswerList;
 //use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -168,33 +171,7 @@ class AssignmentController extends Controller
         ));
     }
 
-    /**
-     * Finds and displays a assignment entity.
-     *
-     * @Route("/student_assignment/{id}", name="student_assignment_show")
-     * @Method("GET")
-     */
-    public function studentAssignmentShowAction(Assignment $assignment)
-    {
-
-        $current_user = $this->container->get('security.context')->getToken()->getUser();
-
-
-        $shares=$assignment->getShares();
-        $users_shares = $shares->map(function($share){return number_format($share->getUser()->getId());});
-
-
-        if (! in_array(number_format($current_user->getId()) ,$users_shares->toArray(),TRUE))
-        {
-            return $this->redirectToRoute("contact_index");
-        }
-        
-
-        return $this->render('assignment/student_assignment_view.html.twig', array(
-            'assignment' => $assignment,
-        ));
-
-    }
+    
 
 
 
@@ -212,6 +189,180 @@ class AssignmentController extends Controller
         $numUpdated = $q->execute();
 
         return new Response("Updated");
+    }
+
+
+    
+
+
+    /**
+     * Finds and displays a assignment entity.
+     *
+     * @Route("/student_assignment/{id}", name="student_assignment_show")
+     * @Method({"GET", "POST"})
+     */
+    public function studentAssignmentShowAction(Assignment $assignment)
+    {
+
+        $current_user = $this->container->get('security.context')->getToken()->getUser();
+
+
+        $shares=$assignment->getShares();
+        $users_shares = $shares->map(function($share){return number_format($share->getUser()->getId());});
+
+        if (! in_array(number_format($current_user->getId()) ,$users_shares->toArray(),TRUE))
+        {
+            return $this->redirectToRoute("contact_index");
+        }
+
+        $pub_students_answers = $this->getUser()->getStudentsAnswers();
+
+        //$pub_students_answer_lists = $this->getUser()->getStudentsAnswers()->getStudentsAnswerLists();
+
+
+
+        $data="";
+
+        if ($this->getRequest()->isMethod('post')) 
+        {
+
+            extract($_POST);
+
+            for($i=0;$i<count($question_ids);$i++)
+            {
+
+               
+
+                //$removeStudentsAnswerList
+
+
+                $students_answer = null;
+
+                if(!isset($students_answer_ids[  $question_ids[$i] ]))
+                {
+                    $entityManager = $this->getDoctrine()->getManager();
+
+                    $students_answer = new StudentsAnswer();
+
+                    $question = $this->getDoctrine()->getRepository(Question::class)->find($question_ids[$i]);
+                    
+                    $students_answer->setUser( $this->getUser() );
+                    $students_answer->setQuestion($question);
+                    $students_answer->setReviewStatus(0);
+                    $students_answer->setScore(0);
+
+                    $entityManager->persist($students_answer);
+                    $entityManager->flush();
+                }
+                else
+                {
+                    $students_answer = $this->getDoctrine()->getRepository(StudentsAnswer::class)
+                        ->find($students_answer_ids[  $question_ids[$i] ]);
+                }
+
+                if($students_answer!=null)
+                {
+                    //to remove the answers...
+                    $entityManagerForDelete = $this->getDoctrine()->getManager();
+                    $qb = $entityManagerForDelete->createQueryBuilder();
+                    $query = $qb->delete('AppBundle:StudentsAnswerList', 'u')
+                        ->where('u.students_answer = '.$students_answer->getId())
+                        ->getQuery();
+                    $query->execute();
+                }
+
+
+
+                if(isset($answers['checkbox'][ $question_ids[$i] ]))
+                {
+                    foreach ($answers['checkbox'][ $question_ids[$i] ] as $eachcheck) 
+                    {
+                        //$data.=$eachcheck."#";
+
+                        if($students_answer!=null)
+                        {
+
+                                $em = $this->getDoctrine()->getManager();
+                                $students_answer_list = new StudentsAnswerList();
+                                $students_answer_list->setStudentsAnswer( $students_answer );
+                                $students_answer_list->setAnswer($eachcheck);
+                                $em->persist($students_answer_list);
+                                $em->flush();
+
+                        }
+
+
+
+                        
+                    }
+                }
+
+                if(isset($answers['radio'][ $question_ids[$i] ]))
+                {
+                    foreach ($answers['radio'][ $question_ids[$i] ] as $eachcheck) 
+                    {
+                       //$data.=$eachcheck."?";
+
+                       if($students_answer!=null)
+                        {
+
+                                $em = $this->getDoctrine()->getManager();
+                                $students_answer_list = new StudentsAnswerList();
+                                $students_answer_list->setStudentsAnswer( $students_answer );
+                                $students_answer_list->setAnswer($eachcheck);
+                                $em->persist($students_answer_list);
+                                $em->flush();
+
+                        }
+
+
+
+                    }
+                }
+
+                if(isset($answers['text'][ $question_ids[$i] ]))
+                {
+                    foreach ($answers['text'][ $question_ids[$i] ] as $eachtext) 
+                    {
+                       //$data.=$eachtext."=";
+
+                       if($students_answer!=null)
+                        {
+
+                                $em = $this->getDoctrine()->getManager();
+                                $students_answer_list = new StudentsAnswerList();
+                                $students_answer_list->setStudentsAnswer( $students_answer );
+                                $students_answer_list->setAnswer($eachtext);
+                                $em->persist($students_answer_list);
+                                $em->flush();
+
+                        }
+
+
+                    }
+                }
+                
+
+                
+
+
+            }
+
+             
+            
+        }
+
+
+
+
+        
+
+        return $this->render('assignment/student_assignment_view.html.twig', array(
+            'assignment' => $assignment,
+            'pub_students_answers'=>$pub_students_answers,
+            'data'=> $data,
+        ));
+
     }
 
 

@@ -365,38 +365,24 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
         }
 
-        if (0 === strpos($pathinfo, '/student_assignment')) {
-            // student_assignment
-            if ('/student_assignment' === rtrim($pathinfo, '/')) {
-                if ('/' === substr($pathinfo, -1)) {
-                    // no-op
-                } elseif (!in_array($this->context->getMethod(), array('HEAD', 'GET'))) {
-                    goto not_student_assignment;
-                } else {
-                    return $this->redirect($rawPathinfo.'/', 'student_assignment');
-                }
-
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_student_assignment;
-                }
-
-                return array (  '_controller' => 'AppBundle\\Controller\\AssignmentController::studentAssignmentAction',  '_route' => 'student_assignment',);
+        // student_assignment
+        if ('/student_assignment' === rtrim($pathinfo, '/')) {
+            if ('/' === substr($pathinfo, -1)) {
+                // no-op
+            } elseif (!in_array($this->context->getMethod(), array('HEAD', 'GET'))) {
+                goto not_student_assignment;
+            } else {
+                return $this->redirect($rawPathinfo.'/', 'student_assignment');
             }
-            not_student_assignment:
 
-            // student_assignment_show
-            if (preg_match('#^/student_assignment/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_student_assignment_show;
-                }
-
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'student_assignment_show')), array (  '_controller' => 'AppBundle\\Controller\\AssignmentController::studentAssignmentShowAction',));
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not_student_assignment;
             }
-            not_student_assignment_show:
 
+            return array (  '_controller' => 'AppBundle\\Controller\\AssignmentController::studentAssignmentAction',  '_route' => 'student_assignment',);
         }
+        not_student_assignment:
 
         // update_assignment_status
         if ('/update_assignment_status' === rtrim($pathinfo, '/')) {
@@ -416,6 +402,17 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             return array (  '_controller' => 'AppBundle\\Controller\\AssignmentController::updateAssignmentStatus',  '_route' => 'update_assignment_status',);
         }
         not_update_assignment_status:
+
+        // student_assignment_show
+        if (0 === strpos($pathinfo, '/student_assignment') && preg_match('#^/student_assignment/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+            if (!in_array($this->context->getMethod(), array('GET', 'POST', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'POST', 'HEAD'));
+                goto not_student_assignment_show;
+            }
+
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'student_assignment_show')), array (  '_controller' => 'AppBundle\\Controller\\AssignmentController::studentAssignmentShowAction',));
+        }
+        not_student_assignment_show:
 
         if (0 === strpos($pathinfo, '/contact')) {
             // contact_index

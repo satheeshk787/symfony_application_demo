@@ -29,6 +29,7 @@ class User extends BaseUser
     private $university;
 
 
+
     /**
      * @ORM\OneToMany(targetEntity="Hobby", mappedBy="user", cascade={"persist","remove"},orphanRemoval=true)
      * @ORM\JoinColumn(name="hobby_id", referencedColumnName="id")
@@ -48,6 +49,16 @@ class User extends BaseUser
      * @ORM\JoinColumn(name="assignment_id", referencedColumnName="id")
      */
     private $assignments;
+
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="StudentsAnswer", mappedBy="user", cascade={"persist","remove"},orphanRemoval=true)
+     * @ORM\JoinColumn(name="students_answer_id", referencedColumnName="id")
+     */
+    private $students_answers;
+
+
 
 
     /**
@@ -105,6 +116,7 @@ class User extends BaseUser
         $this->hobbies = new ArrayCollection();
         $this->shares = new ArrayCollection();
         $this->assignments = new ArrayCollection();
+        $this->students_answers = new ArrayCollection();
     }
 
 
@@ -282,6 +294,36 @@ class User extends BaseUser
     {
 
     }
+
+
+    //students answer
+
+    public function getStudentsAnswers()
+    {
+        return $this->students_answers;
+    }
+    
+    public function addStudentsAnswer(StudentsAnswer $students_answer)
+    {
+
+        $students_answer->setUser($this);
+        $this->students_answers->add($students_answer);
+    }
+
+    public function removeStudentsAnswer(StudentsAnswer $students_answer)
+    {
+        $this->students_answers->removeElement($students_answer);
+        return $this;
+    }
+
+
+
+
+
+
+
+
+
 
 
 
