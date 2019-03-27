@@ -10,4 +10,8 @@ namespace AppBundle\Repository;
  */
 class AssignmentRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function hello($data)
+	{
+		return "hi ".$data;
+	}
 }

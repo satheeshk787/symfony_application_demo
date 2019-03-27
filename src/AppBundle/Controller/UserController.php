@@ -661,6 +661,96 @@ class UserController extends Controller
 
 
    
+    /**
+     * 
+     *
+     * @Route("/assignment/review/{id}", name="review_assignment")
+     * @Method({"GET","POST"})
+     */
+    public function review(Request $request,$id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+
+
+         //$users = $em->getRepository('AppBundle:User')->findBy(array('role' => '1'));
+        $search="";
+        if(isset($_GET['search']))
+        {
+            if($_GET['search']!="")
+            {
+                $search=" and u.username like '%".$_GET['search']."%'";
+            }
+        }
+
+       // $assignments = $em->getRepository('AppBundle:Assignment')->find($id);
+       // $shares=$assignments->getShares();
+
+       // $users=$shares->getUser();
+
+       $users = $em->getRepository('AppBundle:User')
+            ->createQueryBuilder('u')
+            ->where("u.role='1' ".$search)
+            ->getQuery()
+            ->execute();
+         
+
+    
+
+        return $this->render('user/review.html.twig', array(
+            'users' => $users,
+            'assignment_id' => $id,
+        ));
+    }
+
+
+
+
+
+    /**
+     *
+     * @Route("/admin_dashboard/", name="admin_dashboard")
+     * @Method("GET")
+     */
+    public function adminDashboardAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $users_data = $em->getRepository('AppBundle:User')
+            ->createQueryBuilder('u')
+            ->select('u.role,count(u.id) as number_data')
+            ->groupBy('u.role')
+            ->getQuery()
+            ->execute();
+
+        
+        $total_assignments = $em->getRepository('AppBundle:Assignment')
+            ->createQueryBuilder('u')
+            ->select('count(u.id) as assignment_count')
+            ->getQuery()
+            ->execute();
+
+         $assignment_finished_data = $em->getRepository('AppBundle:StudentsAnswer')
+            ->createQueryBuilder('u')
+            ->select('u.reviewStatus,count(u.id) as number_data')
+            ->groupBy('u.reviewStatus')
+            ->getQuery()
+            ->execute();
+
+        // $max_share_assignment = $em->getRepository('AppBundle:Share')
+        //     ->createQueryBuilder('u')
+        //     ->select('u.assignment,count(u.user) as user_count')
+        //     ->groupBy('u.assignment')
+        //     ->orderBy('user_count', 'DESC')
+        //     ->getQuery()
+        //     ->execute();
+
+        return $this->render('user/admin_index.html.twig', array(
+            'users_data' => $users_data,
+            'total_assignments'=>$total_assignments,
+            'assignment_finished_data'=>$assignment_finished_data,
+        ));
+    }
 
 
 

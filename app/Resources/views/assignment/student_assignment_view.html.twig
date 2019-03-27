@@ -83,7 +83,8 @@
   <h5 class="card-header ">Questions</h5>
   <div class="card-body">
 
-{{data}}
+
+
 
 <form method="post" action="">
 
@@ -91,31 +92,41 @@
    <ol style="width: 100%">
       {% for question in assignment.questions %}
 
-        {% set answer_array = [] %}
-        {% set answer_array_id = [] %}
+          {% set question_id = null %}
+          {% set student_answer_id = null %}
+          {% set answer_list_data=[] %}
 
-        {% for s_answer in pub_students_answers %}
-         
-          {% if s_answer.question.id == question.id %}
-             <input type="hidden" value="{{s_answer.id}}" name="students_answer_ids[{{question.getId}}]">
-          {% endif %}
+          {% for student_answer in pub_students_answers %}
+              {% if question.id==student_answer.question.id  %}
+                  
+                  {% set question_id = student_answer.question.id  %}
+                  {% set student_answer_id = student_answer.id %}
+                  
+                  
+                  {% for answer_list in student_answer.getStudentsAnswerLists %}
+                      
+                      {% set answer_list_data =  answer_list_data|merge ( [answer_list.answer] )   %}
 
-          {% for answer in s_answer.getStudentsAnswerLists %}
+                  {% endfor %}
 
-            {{answer.answer}} # {{answer.getStudentsAnswer.question.id}},
-
-
-            {% set answer_array = answer_array|merge([answer.answer]) %}
-            {% set answer_array_id = answer_array_id|merge([answer.getStudentsAnswer.question.id]) %}
-
+              {% endif %}
           {% endfor %}
 
-        {% endfor %}
+
+          
+          {% if student_answer_id != null  %}
+            <input type="hidden" value="{{ student_answer_id }}" name="students_answer_ids[{{ question_id }}]">
+          {% endif %}
+
+
+
 
           <li>
             <h5 class="card-title">{{question.question}}</h5>
 
             <input type="hidden" value="{{question.getId}}" name="question_ids[]">
+
+            
             {% for answer in question.answers %}
 
 
@@ -124,24 +135,35 @@
                  <label class="card-text">
                     <input type="radio" name="answers[radio][{{question.id}}][]"  value="{{answer.answer}}"
 
-                      {% if question.getId in answer_array_id|keys %}
-                          {% if answer.answer == answer_array[keys] %}
-                            selected
-                          {% endif %}
-                      {% endif %}
 
+                    {% if answer_list_data[0] is defined %}
+                         {% if answer_list_data[0]==answer.answer %}
+                            checked
+                         {% endif %}
+                    {% endif %}
 
-                     /> {{answer.answer}}
+                    /> {{answer.answer}}
                  </label>
 
-                {% if question.getId in answer_array_id %}
-                    ----
-                {% endif %}
-                
               {% elseif question.getQuestionType=='3' %}
                
                   <label class="card-text">
-                     <input type="checkbox" name="answers[checkbox][{{question.id}}][]" value="{{answer.answer}}" /> {{answer.answer}}
+                     <input type="checkbox" name="answers[checkbox][{{question.id}}][]" value="{{answer.answer}}" 
+
+
+
+                    {% if answer_list_data is defined %}
+
+                        {% for sel_answer in answer_list_data %}
+                           {% if sel_answer==answer.answer %}
+                              checked
+                           {% endif %}
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                     /> {{answer.answer}}
                   </label>
               
               {% endif %}
@@ -150,12 +172,20 @@
             {% endfor %}
 
             {% if question.getQuestionType=='1' %}
+             
+              <input type="text" name="answers[text][{{question.id}}][]" class="form-control" placeholder="Write your answer"
 
-              <input type="text" name="answers[text][{{question.id}}][]" class="form-control" placeholder="Write your answer" >
+                {% if answer_list_data[0] is defined %}
+                     value='{{ answer_list_data[0] }}'
+                {% endif %}
+               
+
+               />
 
             {% endif %}
 
           </li>
+      
       {% endfor %}
   </ol>
 

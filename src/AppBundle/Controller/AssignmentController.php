@@ -6,6 +6,7 @@ use AppBundle\Entity\Assignment;
 use AppBundle\Entity\StudentsAnswer;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\StudentsAnswerList;
+use AppBundle\Entity\User;
 //use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -207,21 +208,22 @@ class AssignmentController extends Controller
         $current_user = $this->container->get('security.context')->getToken()->getUser();
 
 
+
+
         $shares=$assignment->getShares();
         $users_shares = $shares->map(function($share){return number_format($share->getUser()->getId());});
-
         if (! in_array(number_format($current_user->getId()) ,$users_shares->toArray(),TRUE))
         {
             return $this->redirectToRoute("contact_index");
         }
+        
 
-        $pub_students_answers = $this->getUser()->getStudentsAnswers();
-
-        //$pub_students_answer_lists = $this->getUser()->getStudentsAnswers()->getStudentsAnswerLists();
-
+        //$pub_students_answer_lists = $pub_students_answers->getStudentsAnswerLists();
 
 
-        $data="";
+        //satheesh
+        // $assignmentsss = $this->getDoctrine()->getRepository(Assignment::class)->hello("hahah");
+        // $data="".$assignmentsss;
 
         if ($this->getRequest()->isMethod('post')) 
         {
@@ -232,10 +234,7 @@ class AssignmentController extends Controller
             {
 
                
-
                 //$removeStudentsAnswerList
-
-
                 $students_answer = null;
 
                 if(!isset($students_answer_ids[  $question_ids[$i] ]))
@@ -258,10 +257,7 @@ class AssignmentController extends Controller
                 {
                     $students_answer = $this->getDoctrine()->getRepository(StudentsAnswer::class)
                         ->find($students_answer_ids[  $question_ids[$i] ]);
-                }
 
-                if($students_answer!=null)
-                {
                     //to remove the answers...
                     $entityManagerForDelete = $this->getDoctrine()->getManager();
                     $qb = $entityManagerForDelete->createQueryBuilder();
@@ -269,8 +265,10 @@ class AssignmentController extends Controller
                         ->where('u.students_answer = '.$students_answer->getId())
                         ->getQuery();
                     $query->execute();
+                    //end of remove answers...
                 }
 
+            
 
 
                 if(isset($answers['checkbox'][ $question_ids[$i] ]))
@@ -282,16 +280,14 @@ class AssignmentController extends Controller
                         if($students_answer!=null)
                         {
 
-                                $em = $this->getDoctrine()->getManager();
-                                $students_answer_list = new StudentsAnswerList();
-                                $students_answer_list->setStudentsAnswer( $students_answer );
-                                $students_answer_list->setAnswer($eachcheck);
-                                $em->persist($students_answer_list);
-                                $em->flush();
+                            $em = $this->getDoctrine()->getManager();
+                            $students_answer_list = new StudentsAnswerList();
+                            $students_answer_list->setStudentsAnswer( $students_answer );
+                            $students_answer_list->setAnswer($eachcheck);
+                            $em->persist($students_answer_list);
+                            $em->flush();
 
                         }
-
-
 
                         
                     }
@@ -306,16 +302,14 @@ class AssignmentController extends Controller
                        if($students_answer!=null)
                         {
 
-                                $em = $this->getDoctrine()->getManager();
-                                $students_answer_list = new StudentsAnswerList();
-                                $students_answer_list->setStudentsAnswer( $students_answer );
-                                $students_answer_list->setAnswer($eachcheck);
-                                $em->persist($students_answer_list);
-                                $em->flush();
+                            $em = $this->getDoctrine()->getManager();
+                            $students_answer_list = new StudentsAnswerList();
+                            $students_answer_list->setStudentsAnswer( $students_answer );
+                            $students_answer_list->setAnswer($eachcheck);
+                            $em->persist($students_answer_list);
+                            $em->flush();
 
                         }
-
-
 
                     }
                 }
@@ -343,27 +337,107 @@ class AssignmentController extends Controller
                 }
                 
 
-                
+
+
+
 
 
             }
 
-             
+            //for refresh the page if it contains post content
+            $request = $this->getRequest();
+            return $this->redirect($request->getUri());
+            //end refresh
+            
+        }
+
+
+        $pub_students_answers = $this->getUser()->getStudentsAnswers();
+
+        return $this->render('assignment/student_assignment_view.html.twig', array(
+            'assignment' => $assignment,
+            'pub_students_answers'=>$pub_students_answers,
+        ));
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Finds and displays a assignment entity.
+     *
+     * @Route("/assignment_review/{assignment_id}/student/{student_id}", name="assignment_review")
+     * @Method({"GET", "POST"})
+     */
+    public function studentAssignmentRevewAction($student_id,$assignment_id)
+    {
+        $assignment =$this->getDoctrine()->getRepository(Assignment::class)->find($assignment_id);
+        $selected_student = $this->getDoctrine()->getRepository(User::class)->find($student_id);
+
+
+        $e_m = $this->getDoctrine()->getManager();
+        $pub_students_answers = $e_m->getRepository('AppBundle:StudentsAnswer')
+            ->createQueryBuilder('stu_ans')
+            ->leftJoin('stu_ans.question', 'question')
+            ->where("stu_ans.user='".$student_id."' and  question.assignment='".$assignment_id."'")
+            ->getQuery()
+            ->execute();
+
+
+
+
+
+        if ($this->getRequest()->isMethod('post')) 
+        {
+
+            extract($_POST);
+
+            if(isset($scores))
+            {
+                foreach ($scores as $i=>$score) 
+                {
+
+                    $em = $this->getDoctrine()->getManager();
+
+                    $students_answer =$this->getDoctrine()->getRepository(StudentsAnswer::class)->find($i);
+
+                    $students_answer->setReviewStatus(1);
+                    $students_answer->setScore($score);
+
+                    $em->persist($students_answer);
+                    $em->flush();
+
+                    
+                }
+            }    
             
         }
 
 
 
-
-        
-
-        return $this->render('assignment/student_assignment_view.html.twig', array(
+        return $this->render('assignment/assignment_review.html.twig', array(
             'assignment' => $assignment,
+            'user' => $selected_student,
             'pub_students_answers'=>$pub_students_answers,
-            'data'=> $data,
         ));
 
     }
+
+
+
+
+
+
+
+
 
 
 

@@ -11,7 +11,7 @@
                 <th>Status</th>
                 <th>Expire Date</th>
                 <th>Description</th>
-                <th colspan="3">Actions</th>
+                <th colspan="4">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +22,9 @@
                 <td>{{ assignment.status }}</td>
                 <td>{{ assignment.getExpireDate|date("d-m-Y") }}</td>
                 <td>{{ assignment.description }}</td>
+                 <td>
+                     <a href="{{ path('review_assignment', { 'id': assignment.id }) }}">Review</a>
+                </td>
                 <td>
                      <a href="{{ path('share_assignment', { 'id': assignment.id }) }}">Share</a>
                 </td>

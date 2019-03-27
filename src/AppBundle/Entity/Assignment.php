@@ -305,6 +305,17 @@ class Assignment
 
 
 
+    //const $val=null;
+    public function getValue()
+    {
+        //return $this->val;
+    }
+    public function setValue()
+    {
+        //return $this->val=$val;
+    }
+
+
 
 
 

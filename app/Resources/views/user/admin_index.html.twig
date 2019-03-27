@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Admin's Dash Board</h1>
+
+    
+
+            
+
+        <div class="row">
+          
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Total Number of Users</h5>
+
+                {% for userdata in users_data %}
+                    <p class="card-text">
+                        {% if(userdata.role==0) %}
+                            <b>Admin</b>
+                        {% elseif(userdata.role==1) %}
+                            <b>Student</b>
+                        {% elseif(userdata.role==2) %}
+                            <b>Professor</b>
+                        {% endif %}
+
+                        : {{userdata.number_data}}
+                    </p>
+                {% endfor %}
+
+               
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Total numeber of assignments</h5>
+                <p class="card-text"><b>Number of assignments</b> : {{total_assignments[0].assignment_count}}</p>
+              </div>
+            </div>
+          </div>
+        
+        </div><br>
+
+
+
+        <div class="row">
+          
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Completed Assignments</h5>
+               
+                    
+
+                    {% set assignment_fh=0 %}
+                    {% set assignment_nf=0 %}
+
+                    {% if assignment_finished_data|length==2 %}
+                        {% if(assignment_finished_data[0].reviewStatus==1 ) %}
+                            {% set assignment_fh = assignment_finished_data[0].number_data %}
+                            {% set assignment_nf = assignment_finished_data[1].number_data %}
+                        {% else %}
+                            {% set assignment_fh = assignment_finished_data[1].number_data %}
+                            {% set assignment_nf = assignment_finished_data[0].number_data %}
+                        {% endif %}
+                    {% elseif assignment_finished_data|length==1 %}
+                        {% if(assignment_finished_data[0].reviewStatus==1 ) %}
+                            {% set assignment_fh = assignment_finished_data[0].number_data %}
+                        {% else %}
+                            {% set assignment_nf = assignment_finished_data[0].number_data %}
+                        {% endif %}
+                    {% endif %}
+
+                    {% set total = assignment_fh + assignment_nf %}
+
+                    
+                    <P class="card-text"><b>Questions finished</b>  : {{ ((assignment_fh / total) * 100) }} %</P>
+                    <P class="card-text"><b>Questions not finished</b>  : {{ ((assignment_nf / total) * 100) }} %</P>
+                    
+                    
+                
+               
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Highest volume assignment </h5>
+                <p class="card-text">Number of assignments : </p>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+
+
+
+
+
+{% endblock %}
