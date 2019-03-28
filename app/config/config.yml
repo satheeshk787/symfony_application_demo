@@ -88,3 +88,26 @@ fos_user:
     #     material_data:
     #         uri_prefix: /uploades/materials
     #         upload_destination: '%kernel.material_dir%/public/uploades/materials'
+
+
+# easy_admin:
+#     entities:
+#         # change the following to the namespaces of your own entities
+#         - AppBundle\Entity\User
+#         - AppBundle\Entity\Assignment
+#         - AppBundle\Entity\University
+
+
+easy_admin:
+    entities:
+        Customer:
+            class: AppBundle\Entity\User
+            new:
+                fields:
+                    - { property: 'username', icon: 'user' }
+                    - { property: 'email', css_class: 'input-large', type_options: { required: false } }
+            edit:
+                fields:
+                    - enabled
+                    - { property: 'username', icon: 'customer' }
+                    - { property: 'email', css_class: 'input-large', help: 'Email is preferred' }

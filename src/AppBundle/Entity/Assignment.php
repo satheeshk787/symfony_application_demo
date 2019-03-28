@@ -215,8 +215,8 @@ class Assignment
      */
     public function setStatus($status)
     {
-        if($status=='ACTIVE'){$status=1;}
-        else{$status=0;}
+        // if($status=='ACTIVE'){$status=1;}
+        // else{$status=0;}
 
         $this->status = $status;
         return $this;
@@ -229,14 +229,16 @@ class Assignment
      */
     public function getStatus()
     {
-        if($this->status==1)
-        {
-            return 'ACTIVE';
-        }
-        else
-        {
-            return 'INACTIVE';
-        }
+
+        return $this->status;
+        // if($this->status==1)
+        // {
+        //     return 'ACTIVE';
+        // }
+        // else
+        // {
+        //     return 'INACTIVE';
+        // }
     }
 
 
@@ -318,7 +320,9 @@ class Assignment
 
 
 
-
+    public function __toString() {
+        return $this->name;
+    }
 
 
 }

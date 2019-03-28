@@ -735,13 +735,13 @@ class UserController extends Controller
             ->select('u.reviewStatus,count(u.id) as number_data')
             ->groupBy('u.reviewStatus')
             ->getQuery()
-            ->execute();
+            ->execute();//remasered
 
         // $max_share_assignment = $em->getRepository('AppBundle:Share')
-        //     ->createQueryBuilder('u')
-        //     ->select('u.assignment,count(u.user) as user_count')
-        //     ->groupBy('u.assignment')
-        //     ->orderBy('user_count', 'DESC')
+        //     ->createQueryBuilder('ss')
+        //     ->select('ss.assignment')
+        //     //->groupBy('u.assignment')
+        //     //->orderBy('user_count', 'DESC')
         //     ->getQuery()
         //     ->execute();
 

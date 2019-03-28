@@ -111,7 +111,9 @@ class Share
 
 
 
-
+    public function __toString() {
+        return "";
+    }
 
 
 

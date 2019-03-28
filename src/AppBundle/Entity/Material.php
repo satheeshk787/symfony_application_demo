@@ -310,7 +310,9 @@ class Material
 
 
 
-
+    public function __toString() {
+        return $this->title;
+    }
 
 
 

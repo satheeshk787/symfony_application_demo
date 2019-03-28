@@ -18,8 +18,13 @@ class AppKernel extends Kernel
 
             new FOS\UserBundle\FOSUserBundle(),
 
+            new EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle(),
+            
             new AppBundle\AppBundle(),
+            
         );
+
+
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
