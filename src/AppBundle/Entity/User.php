@@ -226,10 +226,7 @@ class User extends BaseUser
 
 
 
-
-
-
-
+    
     public function getAssignments()
     {
         return $this->assignments;

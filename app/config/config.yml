@@ -100,14 +100,32 @@ fos_user:
 
 easy_admin:
     entities:
-        Customer:
+        User:
             class: AppBundle\Entity\User
             new:
                 fields:
                     - { property: 'username', icon: 'user' }
-                    - { property: 'email', css_class: 'input-large', type_options: { required: false } }
+                    - { property: 'email', css_class: 'input-large', type_options: { required: true } }
             edit:
                 fields:
                     - enabled
-                    - { property: 'username', icon: 'customer' }
+                    - { property: 'username', icon: 'user' }
                     - { property: 'email', css_class: 'input-large', help: 'Email is preferred' }
+        Assignment:
+            class: AppBundle\Entity\Assignment
+            new:
+                fields:
+                    - { property: 'name', icon: 'user' }
+                    - { property: 'description', css_class: 'input-large', type_options: { required: true } }
+            edit:
+                fields:
+                    - { property: 'name', icon: 'user' }
+                    - { property: 'description', css_class: 'input-large', help: 'Description is preferred' }
+        University:
+            class: AppBundle\Entity\University
+            new:
+                fields:
+                    - { property: 'name', icon: 'user' }
+            edit:
+                fields:
+                    - { property: 'name', icon: 'user' }

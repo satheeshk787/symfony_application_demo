@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Banners list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for banner in banners %}
+            <tr>
+                <td><a href="{{ path('banner_show', { 'id': banner.id }) }}">{{ banner.id }}</a></td>
+                <td>{{ banner.title }}</td>
+                <td>{{ banner.role }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('banner_show', { 'id': banner.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('banner_edit', { 'id': banner.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('banner_new') }}">Create a new banner</a>
+        </li>
+    </ul>
+{% endblock %}
