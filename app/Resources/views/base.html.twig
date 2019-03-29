@@ -50,6 +50,10 @@
                       <li class="nav-item">
                         <a class="nav-link" href="/university_changed_user">University changed user</a>
                       </li>
+
+                       <li class="nav-item">
+                        <a class="nav-link" href="/banner">Banner</a>
+                      </li>
                       
                     {% endif %}
 
@@ -98,6 +102,12 @@
 
           </div>  
         </nav>
+
+       {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+              {{ render(controller('AppBundle:Default:banner')) }}
+       {% endif %}
+
+
 
         <div class="container" style="margin-top:30px">
             {% block body %}{% endblock %}

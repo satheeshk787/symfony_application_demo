@@ -100,10 +100,10 @@ class Banner
      */
     public function getRole()
     {
-        if($this->role==0){ return 'admin';  }
-        else if($this->role==1){ return 'student';  }
-        else if($this->role==2){ return 'professor';  }
-        else if($this->role==3){ return 'school';  }
+        if($this->role=='0'){ return 'admin';  }
+        else if($this->role=='1'){ return 'student';  }
+        else if($this->role=='2'){ return 'professor';  }
+        else if($this->role=='3'){ return 'school';  }
         else{ return $this->role; }
     }
 

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Hobby;
+use AppBundle\Entity\Banner;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class DefaultController extends Controller
@@ -22,6 +23,35 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ));
     }
+
+
+
+    public function bannerAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+
+        $newrole=null;
+        $role=$this->getUser()->getRole();
+        switch ($role) 
+        {
+            case 'admin': $newrole=0;  break;
+            case 'student': $newrole=1;  break;
+            case 'professor': $newrole=2;  break;
+            case 'school': $newrole=3;  break;
+        }
+        
+        
+        $banner = $em->getRepository('AppBundle:Banner')->findBy(array('role' => $newrole));
+        
+        return $this->render('default/banner.html.twig', array(
+            'banners' => $banner,
+        ));
+    }
+
+
+
+
 
     /**
      * Creates a new hobby entity.

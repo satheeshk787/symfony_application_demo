@@ -18,13 +18,15 @@ class BannerType extends AbstractType
         $builder
             ->add('title')
             ->add('role', ChoiceType::class, ['attr'=>['class' => 'form-control'],'choices' => [ 
+                '' => 'Select Role',
                 'admin' => 'Admin',
                 'student' => 'Student',
                 'professor' => 'Professor',
                 'school' => 'School'
             ]])
         ;
-    }/**
+    }
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
