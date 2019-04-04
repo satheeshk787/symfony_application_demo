@@ -17,6 +17,8 @@ class University
 
 
 
+
+
     /**
      * @var int
      *
@@ -116,7 +118,9 @@ class University
     }
 
 
-
+    public function show($name) { 
+      return $name. " , university name is tested!"; 
+   } 
 
 
 

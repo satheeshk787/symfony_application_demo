@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Apikeys list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Keycode</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for apiKey in apiKeys %}
+            <tr>
+                <td><a href="{{ path('apikey_show', { 'id': apiKey.id }) }}">{{ apiKey.id }}</a></td>
+                <td>{{ apiKey.name }}</td>
+                <td>{{ apiKey.keyCode }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('apikey_show', { 'id': apiKey.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('apikey_edit', { 'id': apiKey.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('apikey_new') }}">Create a new apiKey</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% if authentication==1 %}
+"assignments":[{% for assignment in assignments %}
+    {
+        "id":"{{ assignment.id }}",
+        "name":"{{ assignment.name }}",
+        "status":"{{ assignment.status }}",
+        "expiredate":"{{ assignment.getExpireDate|date("d-m-Y") }}",
+        "description":"{{ assignment.description }}",
+        "materials":[
+        {% for material in assignment.materials %}
+        {
+            "id":"{{ material.id }}",
+            "title":"{{ material.title }}",
+            "url":"{{ app.request.getSchemeAndHttpHost() }}/{{ material.getWebMaterialDataPath }}"
+        }{% if loop.last!=true %},{% endif %}
+        {% endfor %}]
+        "questions":[
+        {% for question in assignment.questions %}
+        {
+            "id":"{{ question.id }}",
+            "question":"{{ question.question }}",
+            "type":"{{ question.questionType }}"
+            "answers":[
+            {% for answer in question.answers %}
+            {
+                "id":"{{ answer.id }}",
+                "answer":"{{ answer.answer }}"
+            }{% if loop.last!=true %},{% endif %}
+            {% endfor %}]
+        }{% if loop.last!=true %},{% endif %}
+        {% endfor %}]
+    }{% if loop.last!=true %},{% endif %}
+{% endfor %}]
+{% else %}
+[{"error"}]
+{% endif %}
+

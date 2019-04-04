@@ -55,6 +55,7 @@ class ComposerStaticInit5ac5ca61e69464a7e79501e32b3fb391
             'Symfony\\Bridge\\Doctrine\\' => 24,
             'Sensio\\Bundle\\GeneratorBundle\\' => 30,
             'Sensio\\Bundle\\FrameworkExtraBundle\\' => 35,
+            'SensioLabs\\Security\\' => 20,
         ),
         'P' => 
         array (
@@ -88,6 +89,10 @@ class ComposerStaticInit5ac5ca61e69464a7e79501e32b3fb391
             'Doctrine\\Common\\' => 16,
             'Doctrine\\Bundle\\DoctrineCacheBundle\\' => 36,
             'Doctrine\\Bundle\\DoctrineBundle\\' => 31,
+        ),
+        'C' => 
+        array (
+            'Composer\\CaBundle\\' => 18,
         ),
         'A' => 
         array (
@@ -192,6 +197,10 @@ class ComposerStaticInit5ac5ca61e69464a7e79501e32b3fb391
         array (
             0 => __DIR__ . '/..' . '/sensio/framework-extra-bundle',
         ),
+        'SensioLabs\\Security\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sensiolabs/security-checker/SensioLabs/Security',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -240,6 +249,10 @@ class ComposerStaticInit5ac5ca61e69464a7e79501e32b3fb391
         array (
             0 => __DIR__ . '/..' . '/doctrine/doctrine-bundle',
         ),
+        'Composer\\CaBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
+        ),
         'AppBundle\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/AppBundle',
@@ -263,10 +276,6 @@ class ComposerStaticInit5ac5ca61e69464a7e79501e32b3fb391
             'Sensio\\Bundle\\DistributionBundle' => 
             array (
                 0 => __DIR__ . '/..' . '/sensio/distribution-bundle',
-            ),
-            'SensioLabs\\Security' => 
-            array (
-                0 => __DIR__ . '/..' . '/sensiolabs/security-checker',
             ),
         ),
         'P' => 

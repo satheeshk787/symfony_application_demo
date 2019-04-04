@@ -9,7 +9,6 @@ return array(
     'Twig_Extensions_' => array($vendorDir . '/twig/extensions/lib'),
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Sensio\\Bundle\\DistributionBundle' => array($vendorDir . '/sensio/distribution-bundle'),
-    'SensioLabs\\Security' => array($vendorDir . '/sensiolabs/security-checker'),
     'Pagerfanta\\' => array($vendorDir . '/pagerfanta/pagerfanta/src'),
     'Metadata\\' => array($vendorDir . '/jms/metadata/src'),
     'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib'),

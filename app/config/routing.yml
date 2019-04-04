@@ -1,3 +1,7 @@
+app_api_key:
+    resource: "@AppBundle/Controller/ApiKeyController.php"
+    type:     annotation
+
 app_banner:
     resource: "@AppBundle/Controller/BannerController.php"
     type:     annotation

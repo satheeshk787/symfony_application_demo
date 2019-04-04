@@ -45,6 +45,38 @@ class AssignmentController extends Controller
         ));
     }
 
+
+
+
+    /**
+     * Lists all assignment entities.
+     *
+     * @Route("/assignments.json", name="assignment_json")
+     * @Method("GET")
+     */
+    public function assignmentJsonAction()
+    {
+        $authentication=0;
+
+        $em = $this->getDoctrine()->getManager();
+
+        if(isset($_GET['key']))
+        {
+           $apikeys = $em->getRepository('AppBundle:ApiKey')->findBy(array('keyCode' => $_GET['key']));
+           if(count($apikeys)!=0)
+           {
+                $authentication=1;
+           }
+        }
+
+        
+        $assignments = $em->getRepository('AppBundle:Assignment')->findAll();
+         return $this->render('assignment/assignment_json.html.twig', array(
+            'authentication' => $authentication,
+            'assignments' => $assignments,
+        ));
+    }
+
     /**
      * Creates a new assignment entity.
      *
